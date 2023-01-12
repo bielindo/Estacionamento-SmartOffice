@@ -6,10 +6,8 @@ Mqtt mqtt;
 
 void setup() {
   Serial.begin(115200);
-  printf("Setup...\n");
   mqtt.wifiConnect();
-  mqtt.reconnect();
-  printf("--------\n");
+  printf("Inicializando sensores...\n");
   for (int i = 0; i < QTD_SENSORES; i++) {
     sensores[i].inicializaSensor();
     sensores[i].inicializaLeds();
