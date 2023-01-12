@@ -12,7 +12,7 @@
 #define INTERVALOR_MEDIDA 5
 #define QTD_MEDIDAS 10
 
-#define ESTA_OCUPADO "s"
-#define NAO_ESTA_OCUPADO "n"
+#define ESTA_OCUPADO "ocupado"
+#define NAO_ESTA_OCUPADO "vago"
 
 #endif

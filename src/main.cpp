@@ -15,10 +15,8 @@ void setup() {
 }
 
 void loop() {
-  if (!mqttClient.connected()) {
-    printf("Reconectando...\n");
-    mqtt.reconnect();
-  }
+
+  mqtt.reconnect();
   
   for (int i = 0; i < QTD_SENSORES; i++) {
     sensores[i].calcularDistancia();

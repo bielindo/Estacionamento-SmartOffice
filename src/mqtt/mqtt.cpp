@@ -9,13 +9,14 @@ void Mqtt::enviaDados(int indice){
     if(sensores[indice].getDistancia() <=140){
         sensores[indice].setEstado(ESTA_OCUPADO);
         sensores[indice].mudaCorFitaSensor(VERMELHO);
+        sensores[indice].setCor(VERDE);
     }else{
         sensores[indice].setEstado(NAO_ESTA_OCUPADO);
         sensores[indice].mudaCorFitaSensor(sensores[indice].getCor());
     }
     
     if(mqttClient.connected()){
-        String topico = "/MVA/dispositivo1/sensor" + indice;
+        std::string topico = "/MVA/dispositivo1/sensor" + std::to_string(indice);
         if(!(sensores[indice].getEstado() == anterior)){ //aproximadamente 1 minuto
             if(mqttClient.publish(topico.c_str(), sensores[indice].getEstado().c_str())){
                 printf("Enviei dado\n");
@@ -35,33 +36,28 @@ void callback(char* topic, byte* message, unsigned int length) {
     if(!strcmp(topic, "/MVA/dispositivo1/sensor0/reservado")){
         if(!strcmp(buffer,"sim")){
             sensores[0].setCor(LARANJA);
-        }else if(!strcmp(buffer,"nao")){
-            sensores[0].setCor(VERDE);
+            mqttClient.publish("/MVA/dispositivo1/sensor0", "reservado");
         }
     }else if (!strcmp(topic, "/MVA/dispositivo1/sensor1/reservado")) {
         if(!strcmp(buffer,"sim")){
-             
             sensores[1].setCor(LARANJA);
-        }else if(!strcmp(buffer,"nao")){
-            sensores[1].setCor(VERDE);
+            mqttClient.publish("/MVA/dispositivo1/sensor1", "reservado");
         }
     }else if (!strcmp(topic, "/MVA/dispositivo1/sensor2/reservado")) {
         if(!strcmp(buffer,"sim")){
             sensores[2].setCor(LARANJA);
-        }else if(!strcmp(buffer,"nao")){
-            sensores[2].setCor(VERDE);
+            mqttClient.publish("/MVA/dispositivo1/sensor2", "reservado");
         }
     }else if (!strcmp(topic, "/MVA/dispositivo1/sensor3/reservado")) {
         if(!strcmp(buffer,"sim")){
             sensores[3].setCor(LARANJA);
-        }else if(!strcmp(buffer,"nao")){
-            sensores[3].setCor(VERDE);
+            mqttClient.publish("/MVA/dispositivo1/sensor3", "reservado");
         }
     }
 }
 
 void Mqtt::reconnect(){
-    printf("Connectando ao Broker MQTT...\n");
+
     while (!mqttClient.connected()) {
         printf("Reconectando to Broker MQTT...\n");
         if (mqttClient.connect("conectado")) {
