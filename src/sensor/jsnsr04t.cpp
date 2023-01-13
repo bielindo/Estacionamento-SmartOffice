@@ -1,7 +1,12 @@
+//Sistema de Monitoramento de vagas - SmartOffice PTI (Parque tecnologico de Itaipu)
+//Desenvolvidores: Gabriel Pereira de Araújo e Sofia Zanette Rovaris
+//Desenvolvido em : 27/05/2022
+
 #include "jsnsr04t.h"
 
+//Classe dos sensores
 Jsnsr04t sensores[QTD_SENSORES] = {
-  Jsnsr04t(4,2,18),
+  Jsnsr04t(4,2,18), // Paramentros (Trigger, echo, LED)
   Jsnsr04t(22,23,19),
   Jsnsr04t(33,32,25),
   Jsnsr04t(13,12,14)
@@ -16,19 +21,21 @@ Jsnsr04t::Jsnsr04t(int8_t trigger, int8_t echo, int dado) : Adafruit_NeoPixel(QT
     this->cor = VERDE;
 }
 
+//Inicializa os Leds
 void Jsnsr04t::inicializaLeds(){
     begin();
     setBrightness(50);
 }
 
+//Incicializa os sensores
 void Jsnsr04t::inicializaSensor() {
   pinMode(this->pinTrigger, OUTPUT); 
   pinMode(this->pinEcho, INPUT);
-  
-  digitalWrite(pinTrigger, LOW); // DESLIGA O TRIGGER E ESPERA 500 uS
+  digitalWrite(pinTrigger, LOW);
   delayMicroseconds(500);
 }
 
+//Funcao que calcula a distancia com uma media entre as leituras, buscando uma melhor precisao
 void Jsnsr04t::calcularDistancia(){
   float leituraSum = 0;
   float resultado = 0;
@@ -42,6 +49,7 @@ void Jsnsr04t::calcularDistancia(){
   this->distancia = this->distancia + 2.2;
 }
 
+//Funcao que coleta a leitura dos sensores bruto, fazendo a divisao em um valor proximo a precisao de centimetros
 float Jsnsr04t::leituraSensor() {
   long duracao = 0; 
   float resultado = 0;
@@ -57,12 +65,13 @@ float Jsnsr04t::leituraSensor() {
   return resultado;
 }
 
+//Funcao que altera as cores dos Leds
 void Jsnsr04t::mudaCorFitaSensor(int32_t cor){
     fill(cor, 0, QTD_LEDS);
     show();
 }
 
-//getters
+// -------------- Getters e Setters --------------
 float Jsnsr04t::getDistancia() const{
     return this->distancia;
 }
